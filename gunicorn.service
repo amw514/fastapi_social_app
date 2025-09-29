@@ -1,0 +1,14 @@
+[Unit]
+Description=Social FastAPI application
+After=network.target
+
+[Service]
+User=ali
+Group=ali
+WorkingDirectory=/home/ali/projects/fastapi_social_media_app
+Environment=PATH=/home/ali/projects/fastapi_social_media_app/myenv/bin
+EnvironmentFile=/home/ali/projects/fastapi_social_media_app/.env
+ExecStart=/home/ali/projects/fastapi_social_media_app/myenv/bin/gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8000
+
+[Install]
+WantedBy=multi-user.target
