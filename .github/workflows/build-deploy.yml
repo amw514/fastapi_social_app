@@ -8,5 +8,5 @@ jobs:
       - name: pulling git repo
         uses: actions/checkout@v5
       - name: say hi to ali
-        uses: echo "hello ali"
+        run: echo "hello ali"
     
