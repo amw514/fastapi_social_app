@@ -41,6 +41,7 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: setup docker buildx
+        id: setup-buildx
         uses: docker/setup-buildx-action@v3
         with:
           context: ./
@@ -51,4 +52,4 @@ jobs:
           cache-to: type-local,dest=/tmp/.buildx-cache
       - name: Image digest
         run: |
-          echo "Image digest: ${{ steps.docker-build.outputs.digest }}"
+          echo "Image digest: ${{ steps.setup-buildx.outputs.digest }}"
