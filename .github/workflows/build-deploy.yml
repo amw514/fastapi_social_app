@@ -3,32 +3,26 @@ name: Build and Deploy
 on: [push, pull_request]
 jobs:
   job1:
-    environment:
-        name: configure testing
-    env:
-        env:
-            DATABASE_HOSTNAME: ${{ secrets.DATABASE_HOSTNAME }}
-            DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
-            DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-            DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-            DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-            SECRET_KEY: ${{ secrets.SECRET_KEY }}
-            ALGORITHM: ${{ secrets.ALGORITHM }}
-            ACCESS_TOKEN_EXPIRE_MINUTES: ${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}
     runs-on: ubuntu-latest
+    env:
+      DATABASE_HOSTNAME: ${{ secrets.DATABASE_HOSTNAME }}
+      DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
+      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      ALGORITHM: ${{ secrets.ALGORITHM }}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}
     steps:
       - name: pulling git repo
         uses: actions/checkout@v5
       - name: say hi to ali
         run: echo "hello ali"
       - name: setting up python
-        run: actions/setup-python@v6
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11" # Specify Python version
       - name: update pip
-        run:  python -m pip install --upgrade pip
+        run: python -m pip install --upgrade pip
       - name: install dependencies
         run: pip install -r requirements.txt
-
-
-      
-
-    
