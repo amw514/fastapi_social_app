@@ -3,7 +3,8 @@ name: Build and Deploy
 on: [push, pull_request]
 jobs:
   job1:
-    runs-on: ubuntu-latest
+    environment:
+      name: configure testing
     env:
       DATABASE_HOSTNAME: ${{ secrets.DATABASE_HOSTNAME }}
       DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
@@ -13,6 +14,16 @@ jobs:
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       ALGORITHM: ${{ secrets.ALGORITHM }}
       ACCESS_TOKEN_EXPIRE_MINUTES: ${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.DATABASE_NAME }}
+        ports:
+          - "5433:5432"
+    runs-on: ubuntu-latest
     steps:
       - name: pulling git repo
         uses: actions/checkout@v5
@@ -20,8 +31,6 @@ jobs:
         run: echo "hello ali"
       - name: setting up python
         uses: actions/setup-python@v6
-        with:
-          python-version: "3.11" # Specify Python version
       - name: update pip
         run: python -m pip install --upgrade pip
       - name: install dependencies
